@@ -2,36 +2,10 @@
 
 --In this ab we learn to use constraints in out database.
 
-/*
-CONSTRAINTS :
--> NOT NULL
--> DEFAULT
--> UNIQUE
--> PRIMARY key
--> FOREIGN key
--> CHECK 
--> INDEX
-*/
 
 USE Advanced;
 
---To modify table 'students' and set 'ID' as the primary key.
---And table in 'teacher' make 'TID' as foreign key.
-
-ALTER TABLE student
-ALTER COLUMN ID int NOT NULL; 
-
-ALTER TABLE student
-ADD PRIMARY KEY(ID);
-
-ALTER TABLE teacher
-ALTER COLUMN TID int NOT NULL; 
-
-/*
-syntax to make a foreign key.
-ALTER TABLE <tablename>
-ADD FOREIGN KEY(TID) REFERENCE parent(attribute);
-*/
+--preliminary------------------------------------------------------------------------------------------------------
 --To create another table 'employee' with schema (*eid, ename, dateofemply, salary).
 
 CREATE TABLE employee(
@@ -42,7 +16,6 @@ CREATE TABLE employee(
 
 	PRIMARY KEY(eid)
 );
-DROP TABLE employee;
 
 
 CREATE TABLE booklist(
@@ -70,10 +43,26 @@ CREATE TABLE issues(
 	PRIMARY KEY(iid)
 );
 
-SELECT * FROM employee;
-SELECT * FROM booklist;
-SELECT * FROM book;
-SELECT * FROM issues;
+-----------------------------------------------------------------------------------------------------------------
+--To modify table 'students' and set 'ID' as the primary key.
+--And table in 'teacher' make 'TID' as foreign key.
+
+ALTER TABLE student
+ALTER COLUMN ID int NOT NULL; 
+
+ALTER TABLE student
+ADD PRIMARY KEY(ID);
+
+ALTER TABLE teacher
+ALTER COLUMN TID int NOT NULL; 
+
+/*
+syntax to make a foreign key.
+ALTER TABLE <tablename>
+ADD FOREIGN KEY(TID) REFERENCE parent(attribute);
+*/
+
+-----------------------------------------------------------------------------------------------------------------
 
 --ADDing a default date for the dateofemploy in employee.
 ALTER TABLE employee
@@ -83,31 +72,7 @@ ALTER TABLE employee
 ADD CONSTRAINT df_employee_dateofemploy
 DEFAULT 'Jan 1, 2010' FOR dateofemploy;
 
---Adding a CHECK constraint to make sure that price of book is less than 5000.
-ALTER TABLE book
-DROP CONSTRAINT ck_book_price; --drops existing constraint.
-
-ALTER TABLE book
-ADD CONSTRAINT ck_book_price 
-CHECK(price > 0 AND price < 5000);
-
---ALTER TABLE book
---ADD CONSTRAINT ck_book_price 
---UNIQUE (bid);
-
---Creating a constraint, such that the "name" in all the relations are NOT NULL i.e. must have some value.
-ALTER TABLE employee
-ALTER COLUMN ename varchar(40) NOT NULL;
-
-ALTER TABLE book
-ALTER COLUMN bname varchar(40) NOT NULL;
-
-ALTER TABLE booklist
-ALTER COLUMN [name] varchar(40) NOT NULL;
-
-ALTER TABLE issues
-ALTER COLUMN [name] varchar(40) NOT NULL;
-
+------------------------------------------------------------------------------------------------------------------
 --Adding bid and iid as a foreign key.
 ALTER TABLE issues
 ADD bid int;
@@ -125,8 +90,31 @@ ADD CONSTRAINT f_k_issues_book
 FOREIGN KEY (iid)
 REFERENCES issues(iid);
 
+------------------------------------------------------------------------------------------------------------------
+--Adding a CHECK constraint to make sure that price of book is less than 5000.
+ALTER TABLE book
+DROP CONSTRAINT ck_book_price; --drops existing constraint.
+
+ALTER TABLE book
+ADD CONSTRAINT ck_book_price 
+CHECK(price > 0 AND price < 5000);
+
+------------------------------------------------------------------------------------------------------------------
+--Creating a constraint, such that the "name" in all the relations are NOT NULL i.e. must have some value.
+ALTER TABLE employee
+ALTER COLUMN ename varchar(40) NOT NULL;
+
+ALTER TABLE book
+ALTER COLUMN bname varchar(40) NOT NULL;
+
+ALTER TABLE booklist
+ALTER COLUMN [name] varchar(40) NOT NULL;
+
+ALTER TABLE issues
+ALTER COLUMN [name] varchar(40) NOT NULL;
+
+-----------------------------------------------------------------------------------------------------------------
 --Inserting 5 entries into each table.
--------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT employee
 VALUES	(1, 'Ram Thapa', 'Jan 18, 2011', 10000),
@@ -134,9 +122,6 @@ VALUES	(1, 'Ram Thapa', 'Jan 18, 2011', 10000),
 		(3, 'Aryan Shrestha', 'Dec 21, 2010', 20000),
 		(4, 'Biplav Karki', 'Mar 16, 2011', 8000),
 		(5, 'Samir Awale', 'Feb 18, 2013', 12000);
-	
-SELECT * FROM employee;
--------------------------------------------------------------------------------------------------------------------------------------------
 
 ALTER TABLE book
 ALTER COLUMN bname varchar(90);
@@ -147,10 +132,6 @@ VALUES	(1, 'All The Bright Places', 'Jennifer Niven', 200),
 		(3, 'Half Girlfriend', 'Chetan Bhagat', 100),
 		(4, 'The Alchemist', 'Paulo Coelho', 400),
 		(5, 'Holding Up The Universe', 'Jennifer Niven', 200);
-	
-SELECT * FROM book;
-delete book;
--------------------------------------------------------------------------------------------------------------------------------------------
 
 ALTER TABLE booklist
 ALTER COLUMN [name] varchar(90);
@@ -161,12 +142,6 @@ VALUES	(100117, 'Modern Operating Systems', 'McMillian Press'),
 		(440111, 'Engineering Economics', 'Mathura Publication'),
 		(009881, 'Filter Design Fundamentals', 'IOE PCampus Press'),
 		(988821, 'Basic Mathematics', 'Taleju Publications');
-	
-SELECT * FROM booklist;
-delete booklist;
--------------------------------------------------------------------------------------------------------------------------------------------
-
-SELECT * FROM student;
 
 INSERT issues
 VALUES	(1, 'Miraj Maharjan', 'June 15, 2023'),
@@ -174,33 +149,74 @@ VALUES	(1, 'Miraj Maharjan', 'June 15, 2023'),
 		(3, 'Biraj Karki', 'may 10, 2023'),
 		(4, 'Kiraj Rai', 'Jan 21, 2023'),
 		(5, 'Riraj Paudel', 'Mar 27, 2023');
-	
-SELECT * FROM issues;
-delete issues;
--------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------
 --Retrieving all tables
 SELECT * FROM employee;
 SELECT * FROM booklist;
 SELECT * FROM book;
 SELECT * FROM issues;
 
+--__________________________________________--ADDITIONAL WORK--______________________________________________--
+--To display the next few outputs we enter some relevant data into tables.
+
+INSERT INTO employee
+VALUES	(6, 'Binaya Shah', 'Apr 18, 2014', 8000),
+		(7, 'Shova Bista', 'Nov 2, 2012', 12000);
+
+INSERT INTO book(bid, bname, author, price)
+VALUES	(6, 'Modern Operating Systems', 'A.S. Tenanbaum', 2700),
+		(7, 'Engineering Economics', 'Ishwar Adhikari', 3000);
+
+INSERT booklist
+VALUES	(333333, 'Study Techniques', 'Ekta Publication'),
+		(232323, 'Principles of Animation', 'E-Ink Publishers');
+
+INSERT issues(iid, [name], dateofissue)
+VALUES	(6, 'Raman', 'Dec 27, 2022');
+
+--___________________________________________________________________________________________________________--
+----------------------------------------------------------------------------------------------------------------
 --Displaying eid and ename of employees with salary less than 10K
-SELECT * FROM employee
-WHERE salary < 15000;
+SELECT eid, ename FROM employee
+WHERE salary < 10000;
 
---Displaying all records of books costing between 200 and 500.
+----------------------------------------------------------------------------------------------------------------
+--Displaying all records of books costing between 2500 and 5000.
 SELECT * FROM book
-WHERE price ;
+WHERE price BETWEEN 2500 AND 5000;
 
---Displaying all records of booklist whose publication starts with 'T'.
+----------------------------------------------------------------------------------------------------------------
+--Displaying all records of booklist whose publication starts with 'E'.
 SELECT * FROM booklist
-WHERE publication ;
+WHERE publication LIKE 'E%';
 
+----------------------------------------------------------------------------------------------------------------
 --Displaying all records of employee whose name ends with 'ta'.
-SELECT * FROM booklist
-WHERE publication ;
+SELECT * FROM employee
+WHERE ename LIKE '%ta' ;
 
+----------------------------------------------------------------------------------------------------------------
+--Displaying iid and name from issues table with names consisting of exactly 5 characters.
+SELECT iid, [name] FROM issues
+WHERE name LIKE '_____' ;
+
+---------------------------------------------------------------------------------------------------------------
+--Displaying all records from employee table with name starting with S and salary greater than 10000.
+SELECT * FROM employee
+WHERE ename LIKE 'S%' AND salary > 10000;
+
+---------------------------------------------------------------------------------------------------------------
+--Displaying all records from book table where either bid is in range 2 to 4 or price range in 400 to 3000.
+SELECT * FROM book
+WHERE bid between 2 AND 4 OR price BETWEEN 400 AND 3000;
+
+---------------------------------------------------------------------------------------------------------------
+--Displaying isbn and bookname where booklist must not contain "23".
+SELECT isbn, [name] FROM booklist
+WHERE isbn NOT LIKE '%23%';
+
+---------------------------------------------------------------------------------------------------------------
+--__________________________________________--ADDITIONAL WORK--______________________________________________--
 --UPDATING TID into student table (also adding a salary to teachers)
 UPDATE student SET TID = 1
 WHERE ID = 1 OR ID = 3;
