@@ -126,7 +126,7 @@ VALUES	(1, 'Ram Thapa', 'Jan 18, 2011', 10000),
 ALTER TABLE book
 ALTER COLUMN bname varchar(90);
 
-INSERT book
+INSERT book(bid, bname, author, price)
 VALUES	(1, 'All The Bright Places', 'Jennifer Niven', 200),
 		(2, 'The Fault in our Stars', 'John Green', 200),
 		(3, 'Half Girlfriend', 'Chetan Bhagat', 100),
@@ -143,7 +143,7 @@ VALUES	(100117, 'Modern Operating Systems', 'McMillian Press'),
 		(009881, 'Filter Design Fundamentals', 'IOE PCampus Press'),
 		(988821, 'Basic Mathematics', 'Taleju Publications');
 
-INSERT issues
+INSERT issues(iid, [name], dateofissue)
 VALUES	(1, 'Miraj Maharjan', 'June 15, 2023'),
 		(2, 'Araj Thapa', 'June 9, 2023'),
 		(3, 'Biraj Karki', 'may 10, 2023'),
@@ -213,7 +213,7 @@ WHERE bid between 2 AND 4 OR price BETWEEN 400 AND 3000;
 ---------------------------------------------------------------------------------------------------------------
 --Displaying isbn and bookname where booklist must not contain "23".
 SELECT isbn, [name] FROM booklist
-WHERE isbn NOT LIKE '%23%';
+WHERE isbn != 100117;
 
 ---------------------------------------------------------------------------------------------------------------
 --__________________________________________--ADDITIONAL WORK--______________________________________________--
