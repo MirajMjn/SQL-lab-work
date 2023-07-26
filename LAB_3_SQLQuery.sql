@@ -59,13 +59,13 @@ SELECT * FROM teacher;
 --using join
 SELECT employee.ename 
 FROM employee INNER JOIN teacher ON employee.ename = teacher.[name]
-WHERE teacher.faculty = 'BCT';
+WHERE teacher.faculty = 'BCT'AND employee.salary > 10000;
 
 --without join
 
 SELECT employee.ename 
 FROM employee, teacher
-WHERE employee.ename = teacher.[name] AND teacher.faculty = 'BCT';
+WHERE employee.ename = teacher.[name] AND teacher.faculty = 'BCT' AND employee.salary > 10000;
 
 ----------------------------------------------------------------------------------------------
 
@@ -97,9 +97,16 @@ WHERE iid = 6;
 ---------------------------------------------------------------------------------------------
 
 --to find the sudent name and book name issues by student whose name starts with M.
-SELECT issues.[name], book.bname 
-FROM book LEFT JOIN issues ON book.bid = issues.bid
+
+--using join						
+SELECT student.[name], book.bname 
+FROM book LEFT JOIN issues ON book.bid = issues.bid LEFT JOIN student ON issues.[name] = student.[name]
 WHERE issues.[name] LIKE 'M%';
+
+--without join
+SELECT issues.[name], book.bname 
+FROM book, issues 
+WHERE book.bid = issues.bid AND issues.[name] LIKE 'M%';
 
 ---------------------------------------------------------------------------------------------
 
@@ -115,4 +122,49 @@ UPDATE employee SET salary = salary * (1.1);
 
 ----------------------------------------------------------------------------------------------
 
---to update book name 
+--to update book name and change it in the book table
+SELECT * FROM book;
+SELECT * FROM booklist;
+
+UPDATE book SET bname = 'Economics'
+WHERE bname = 'Engineering Economics';
+
+----------------------------------------------------------------------------------------------
+
+--to update the salary of all employees by 20% whose salary is less than 8000.
+SELECT * FROM employee;
+
+UPDATE employee SET salary = salary*(1.2)
+WHERE salary <= 9000;
+----------------------------------------------------------------------------------------------
+
+--to update salary by 5% if salary > 20000 else update it by 20%
+
+UPDATE employee SET salary = CASE WHEN salary > 20000 THEN salary*1.05 ELSE salary*1.2 END;
+
+----------------------------------------------------------------------------------------------
+--to delete employee record with eid 3
+DELETE FROM employee WHERE eid = 3;
+SELECT * FROM employee;
+
+-----------------------------------------------------------------------------------------------
+-- to find all teacher name and faculty where date of employ is 12 Dec, 2012
+UPDATE employee SET dateofemploy = '12 Dec, 2012'
+WHERE eid = 10;
+
+SELECT * FROM teacher;
+SELECT * FROM employee;
+
+--actual query
+SELECT [name], faculty FROM teacher 
+WHERE teacher.[name] IN (SELECT employee.ename FROM employee WHERE dateofemploy = '12 Dec, 2012')
+-----------------------------------------------------------------------------------------------
+
+--Use sub query to find all the book name and author name whose publication is “Ekta Publication”
+
+SELECT * FROM book;
+SELECT * FROM booklist;
+
+SELECT bname, author FROM book 
+WHERE book.bname IN (SELECT booklist.[name] FROM booklist WHERE publication = 'Ekta Publication');
+----------------------------------------------------------------------------------------------
